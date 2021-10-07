@@ -5,10 +5,12 @@ import { QuestionsList } from "../components/QuestionsList";
 import { useTimer } from "../hooks/timer.hook";
 import { MainContext } from "../context/MainContext";
 import axios from "axios";
+import { Loader } from "../components/Loader";
 
 export const MainPage = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   const { seconds, minutes } = useTimer();
 
@@ -19,6 +21,8 @@ export const MainPage = () => {
       const res = await axios.get("/api/question/");
 
       setQuestions(res.data);
+
+      setLoader(false);
     } catch (e) {
       console.log(e);
     }
@@ -33,12 +37,10 @@ export const MainPage = () => {
       return a.index - b.index;
     });
 
-    const res = await axios.post("/api/question/send", {
+    await axios.post("/api/question/send", {
       answers: [...answers],
       user: { ...context.user },
     });
-
-    console.log(res);
 
     context.setFinal(true);
   };
@@ -58,6 +60,10 @@ export const MainPage = () => {
 
     return `${minutes}:${seconds}`;
   };
+
+  if (loader) {
+    return <Loader />;
+  }
 
   return (
     <div className="main">
