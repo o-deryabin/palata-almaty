@@ -1,0 +1,46 @@
+.time {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 0 10px #000;
+  text-align: center;
+}
+
+.questions {
+  margin-top: 85px;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(121, 121, 121);
+  background-image: url("https://palata-almaty.kz/wp-content/uploads/2020/06/Rectangle-1.jpg");
+  .content {
+    min-width: 400px;
+    margin: 0 20px;
+    background-color: #00000038;
+    backdrop-filter: blur(5px);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px #000;
+    h1,
+    h2,
+    p {
+      color: #fff;
+    }
+  }
+}
+
+.main {
+  .container {
+    max-width: 800px;
+  }
+}
