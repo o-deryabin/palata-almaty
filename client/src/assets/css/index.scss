@@ -22,7 +22,10 @@
   justify-content: center;
   align-items: center;
   background-color: rgb(121, 121, 121);
-  background-image: url("https://palata-almaty.kz/wp-content/uploads/2020/06/Rectangle-1.jpg");
+  background-image: url("../image/background.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   .content {
     min-width: 400px;
     margin: 0 20px;
