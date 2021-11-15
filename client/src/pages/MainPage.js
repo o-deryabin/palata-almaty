@@ -37,10 +37,14 @@ export const MainPage = () => {
       return a.index - b.index;
     });
 
-    await axios.post("/api/question/send", {
+    const { data } = await axios.post("/api/question/send", {
       answers: [...answers],
       user: { ...context.user },
     });
+
+    console.log(data);
+
+    context.setResult(data.path);
 
     context.setFinal(true);
   };

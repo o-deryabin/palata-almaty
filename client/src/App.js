@@ -6,7 +6,8 @@ import { useUser } from "./hooks/user.hook";
 import { useRoutes } from "./routes";
 
 function App() {
-  const { user, authenticated, setAuthenticated, setUser } = useUser();
+  const { user, authenticated, result, setAuthenticated, setUser, setResult } =
+    useUser();
 
   const { final, setFinal } = useTimer();
 
@@ -22,6 +23,8 @@ function App() {
           setUser,
           setFinal,
           final,
+          result,
+          setResult,
         }}
       >
         <Router>{routes}</Router>

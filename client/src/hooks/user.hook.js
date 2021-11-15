@@ -7,7 +7,9 @@ export const useUser = () => {
     tel: "",
   });
 
+  const [result, setResult] = useState("");
+
   const [authenticated, setAuthenticated] = useState(true);
 
-  return { user, setUser, authenticated, setAuthenticated };
+  return { user, setUser, authenticated, setAuthenticated, result, setResult };
 };

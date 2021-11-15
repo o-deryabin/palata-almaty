@@ -8,9 +8,11 @@ export const MainContext = createContext({
     email: "",
     tel: "",
   },
+  result: "",
   authenticated: true,
   final: false,
   setFinal: noop,
   setAuthenticated: noop,
   setUser: noop,
+  setResult: noop,
 });

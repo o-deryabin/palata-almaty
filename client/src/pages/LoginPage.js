@@ -37,8 +37,6 @@ export const LoginPage = () => {
         user: context.user,
       });
 
-      console.log(res);
-
       if ((res.status = 200)) {
         setValidated(true);
 

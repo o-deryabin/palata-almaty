@@ -1,7 +1,9 @@
 const { Router } = require("express");
+const blobStream = require("blob-stream");
 const questions = require("../questions");
 const mailer = require("../nodemailer");
 const User = require("../models/User");
+const generator = require("../pdfgenerator");
 
 const router = Router();
 
@@ -24,8 +26,8 @@ router.post("/send", async (req, res) => {
     }
 
     let correct = 0;
-    let unanswered =
-      answers.length < questions.length ? questions.length - answers.length : 0;
+    let unanswered = questions.length - answers.length;
+    let result = [];
 
     const userAnswers = (answers) => {
       answers.map((v) => {
@@ -37,24 +39,47 @@ router.post("/send", async (req, res) => {
 
     userAnswers(answers);
 
+    console.log(answers);
+
+    questions.forEach((i, index) => {
+      const answer = answers.find((i) => i.index == index);
+
+      if (answer) {
+        if (answer.t) {
+          result.push(`${index + 1})${answer.answer} - Правильно.`);
+        } else {
+          result.push(`${index + 1})${answer.answer} - Неправильно.`);
+        }
+      } else {
+        result.push(`${index + 1}) Неовеченный.`);
+      }
+    });
+
     const newUser = new User({ fio, tel, email, correct, unanswered });
 
     await newUser.save();
 
+    generator(fio, tel, email, correct, unanswered, result);
+
     const message = {
       to: `olegderyabin22@gmail.com`, // list of receivers
       subject: "Результаты теста", // Subject line
-      text: `Спасибо что прошли наше тестирование!
-      ФИО: ${fio}
-      Телефон: ${tel}
-      Email: ${email} 
-      Правильных ответов: ${correct}
-      Неотвеченных: ${unanswered}`, // plain text body
+      html: `Спасибо что прошли наше тестирование!<br>
+      <strong>ФИО:</strong> ${fio}<br>
+      <strong>Телефон:</strong> ${tel}<br>
+      <strong>Email:</strong> ${email}<br>
+      <strong>Правильных ответов:</strong> ${correct}<br>
+      <strong>Неотвеченных:</strong> ${unanswered}<br>
+      
+      Вопросы:<br>
+      ${result}`, // plain text body
     };
 
-    mailer(message);
+    // mailer(message);
 
-    res.status(200).json({ message: "Заявка отправлена" });
+    res
+      .status(200)
+      .json({ message: "Заявка отправлена", path: `${email}.pdf` });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "что-то пошло не так" });
@@ -67,7 +92,7 @@ router.post("/check", async (req, res) => {
 
     const candidate = await User.findOne({ email: user.email });
 
-    if (candidate) {
+    if (candidate && candidate.email != "olegderyabin22@gmail.com") {
       return res
         .status(400)
         .json({ message: "Полозователь с таким Email уже есть" });

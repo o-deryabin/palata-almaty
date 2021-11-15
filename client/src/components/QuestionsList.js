@@ -3,24 +3,27 @@ import Form from "react-bootstrap/Form";
 
 export const QuestionsList = ({ questions, answers, setAnswers }) => {
   const answerHandler = (event) => {
-    console.log(event);
-
+    // Проверям отвечали ли на этот вопрос
     const similarQuestion = answers.findIndex(
       (item) => item.index === event.target.dataset.index
     );
 
+    // Достаем нужный ответ из массива вопросов
     const answer = questions[event.target.dataset.index].answers.filter(
       (i) => i.value === event.target.value
     );
 
     console.log(answer);
 
+    // Если на этот вопрос уже отвечали перезаписываем его
     if (similarQuestion !== -1) {
-      answers[similarQuestion].value = event.target.value;
+      answers[similarQuestion].answer = event.target.value;
       answers[similarQuestion].t = answer[0].t;
+      console.log(answers);
       return;
     }
 
+    // Добавляем новый ответ в массив ответов
     setAnswers([
       ...answers,
       {
