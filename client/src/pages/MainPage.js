@@ -42,8 +42,6 @@ export const MainPage = () => {
       user: { ...context.user },
     });
 
-    console.log(data);
-
     context.setResult(data.path);
 
     context.setFinal(true);

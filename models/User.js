@@ -6,6 +6,7 @@ const schema = new Schema({
   tel: { type: String, require: true },
   correct: { type: Number, require: true },
   unanswered: { type: Number, require: true },
+  time: { type: Date, default: Date.now },
 });
 
 module.exports = model("User", schema);

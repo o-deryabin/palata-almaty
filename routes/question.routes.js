@@ -16,6 +16,22 @@ router.get("/", (req, res) => {
   }
 });
 
+router.post("/results", async (req, res) => {
+  try {
+    console.log(req.body);
+    if (req.body.password !== process.env.RESULTS_PASSWORD) {
+      return res.status(401).json({ message: "Неверный пароль" });
+    }
+
+    const users = await User.find();
+
+    res.json(users);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "что-то пошло не так" });
+  }
+});
+
 router.post("/send", async (req, res) => {
   try {
     const { answers, user } = req.body;
@@ -38,8 +54,6 @@ router.post("/send", async (req, res) => {
     };
 
     userAnswers(answers);
-
-    console.log(answers);
 
     questions.forEach((i, index) => {
       const answer = answers.find((i) => i.index == index);
